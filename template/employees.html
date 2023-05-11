@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Employee List</title>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script>
+		function getEmployeeData() {
+			var employee_ids = $('#employee_ids').val();
+			$.ajax({
+				type: 'GET',
+				url: '/api/employees',
+				data: {employee_ids: employee_ids},
+				success: function(data) {
+					$('#employee_data').empty();
+					$.each(data, function(index, employee) {
+						$('#employee_data').append('<tr><td>' + employee.id + '</td><td>' + employee.name + '</td><td>' + employee.department + '</td><td>' + employee.job_title + '</td><td>' + employee.location + '</td></tr>');
+					});
+				},
+				error: function(jqXHR, textStatus, errorThrown) {
+					console.log('Error: ' + errorThrown);
+				}
+			});
+		}
+	</script>
+</head>
+<body>
+	<h1>Employee List</h1>
+	<form>
+		<label for="employee_ids">Employee IDs (comma separated):</label>
+		<input type="text" id="employee_ids" name="employee_ids">
+		<input type="button" value="Submit" onclick="getEmployeeData()">
+	</form>
+	<table>
+		<tr>
+			<th>ID</th>
+			<th>Name</th>
+			<th>Department</th>
+			<th>Job Title</th>
+			<th>Location</th>
+		</tr>
+		<tbody id="employee_data"></tbody>
+	</table>
+</body>
+</html>
